@@ -1,6 +1,6 @@
 import React from 'react';
 import RatingSystem from './components/RatingSystem'
-import TestForm from './components/TestForm'
+import Test from './components/Test'
 
 const restaurantList = [
   {
@@ -48,7 +48,7 @@ function App(props) {
 
   return (
     <>
-      {/* <TestForm /> */}
+      {/* <Test title={"Lire is the best"} /> */}
       <RatingSystem restaurantList={restaurantList} />
     </>
   );

@@ -7,20 +7,48 @@ const { TextArea } = Input;
 export const EditModel = (props) => {
   const [form] = Form.useForm();
 
+
   React.useEffect(() => {
-    // console.log(props.index)
+    console.log(props)
     form.setFieldsValue({
       name: props.restaurant.name,
+      description: props.restaurant.description,
+      rating: props.restaurant.rating,
+      isOnsale: props.restaurant.isOnsale,
+      serveList: props.restaurant.serveList,
+      foundLocation: props.restaurant.foundLocation,
     });
-  }, []);
+  }, [props.visible]);
+
+  const handleChange = ( field, value) => {
+    console.log(value)
+    switch (field) {
+      case "name":
+        console.log("in set name")
+        const s = "FADFADSFASFASF"
+        form.setFieldsValue({name: s})
+        break;
+    
+      default:
+        console.log("error")
+        break;
+    }
+  };
 
   const testFinish = (values) => {
     console.log(values)
   }
 
+  const submitRestaurant = (values) => {
+    if (!values.isOnsale) {
+      values.isOnsale = props.restaurant.isOnsale;
+    }
+    props.saveRestaurant(values)
+  }
+
   const generateModelFooter = () => {
     const footer = [
-      <Button key="save" type="primary" onClick={testFinish} form="RestaurantForm" key="submit" htmlType="submit">
+      <Button type="primary" onClick={submitRestaurant} form="RestaurantForm" key="submit" htmlType="submit">
         儲存
       </Button>,
       <Button key="cancel" onClick={props.onCancel}>
@@ -44,7 +72,7 @@ export const EditModel = (props) => {
       name="name"
       rules={[{ required: true, message: '請輸入餐廳名稱!' }]}
     >
-      <Input onChange={()=>{console.log("input")}}></Input>
+      <Input onChange={(value)=>{ handleChange("name", value.target.value)}}></Input>
     </Form.Item>
   );
 
@@ -64,7 +92,7 @@ export const EditModel = (props) => {
       name="rating"
       rules={[{ required: true, message: '一顆星50000。' }]}
     >
-      <Rate allowHalf ßß></Rate>
+      <Rate allowHalf></Rate>
     </Form.Item>
   );
 
@@ -72,9 +100,8 @@ export const EditModel = (props) => {
     <Form.Item
       label="isOnsale"
       name="isOnsale"
-      rules={[{ required: true, message: '夏日特賣不打折？' }]}
     >
-      <Switch checked/>
+      <Switch />
     </Form.Item>
   );
 
@@ -115,6 +142,7 @@ export const EditModel = (props) => {
         visible={props.visible}
         onCancel={props.onCancel}
         footer={footer}
+        forceRender
       >
         <Form form={form} onFinish={testFinish} id="RestaurantForm" >
           {nameFormItem}

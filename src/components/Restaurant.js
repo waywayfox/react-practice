@@ -64,12 +64,13 @@ export class Restaurant extends React.Component {
   }
 
   handleEditConfig = (e) => {
-    console.log("in restaurant" + toString(this.props.index))
+    // console.log(this.props)
+    console.log(this.props.index)
     this.props.editRestaurant(this.props.index)
   }
 
   render() {
-    console.log(this.props)
+    // console.log(this.props)
     const tags = this.getRestaurantsTagsFromProps()
     return (
       <Card title={ this.props.title} key={this.props.index}>

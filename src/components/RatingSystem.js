@@ -103,19 +103,19 @@ class RatingSystem extends React.Component {
     }, this.updateVisibleList);
   }
   
+  enterConfigMode = (index) => {
+    // console.log("in system enter" + toString(index))
+    this.setState({
+      configMode: true,
+      editIndex: index
+    });
+  };
   // enterConfigMode = (index, e) => {
   //   console.log("in system enter" + toString(index))
-  //   this.setState({
-  //     configMode: true,
-  //     editIndex: index
-  //   });
   // };
-  enterConfigMode = (index, e) => {
-    console.log("in system enter" + toString(index))
-  };
 
   changeEditIndex = (index) => {
-    console.log("in change" + toString(index))
+    console.log(index)
     this.setState({
       editIndex: index
     });
@@ -177,7 +177,7 @@ class RatingSystem extends React.Component {
             isOnSale={restaurant.isOnSale}
             serveList={restaurant.serveList}
             foundLocation={restaurant.foundLocation}
-            editRestaurant={this.changeEditIndex.bind(this, restaurant.index)}
+            editRestaurant={this.enterConfigMode.bind(this, restaurant.index)}
             index={restaurant.index}
             key={restaurant.index}
           />
@@ -197,7 +197,7 @@ class RatingSystem extends React.Component {
         isAdd={this.state.editIndex === this.state.nextRestaurantIndex}
       />
     );
-    console.log("now edit is " + toString(this.state.editIndex))
+    console.log(this.state.editIndex)
     return (
       <>
         <div style={{padding: 30}}>
