@@ -2,6 +2,8 @@ import React from 'react';
 import { Col, Row, Input, Button, Space, Select } from 'antd';
 import { Restaurant } from './Restaurant'
 import { EditModel } from './EditModel'
+import { configConsumerProps } from 'antd/lib/config-provider';
+import { formatCountdown } from 'antd/lib/statistic/utils';
 
 const { Option } = Select;
 
@@ -104,15 +106,13 @@ class RatingSystem extends React.Component {
   }
   
   enterConfigMode = (index) => {
-    // console.log("in system enter" + toString(index))
+    console.log('config mode idex', index);
     this.setState({
       configMode: true,
       editIndex: index
     });
   };
-  // enterConfigMode = (index, e) => {
-  //   console.log("in system enter" + toString(index))
-  // };
+
 
   changeEditIndex = (index) => {
     console.log(index)
@@ -139,7 +139,9 @@ class RatingSystem extends React.Component {
   }
 
   saveRestaurant = (restaurant) => {
-    // 
+    console.log("in save")
+    console.log(restaurant)
+
     let newAllRestaurants;
     if (restaurant.index === this.state.nextRestaurantIndex) {
       newAllRestaurants = this.state.allRestaurants.slice(0);
@@ -164,10 +166,7 @@ class RatingSystem extends React.Component {
 
   render() {
     const renderList = this.state.visibleRestaurantList.map((restaurant, index) => {
-      // const enterFunction = this.enterConfigMode.bind(this, restaurant.index)
-      // const enterFunction = this.enterConfigMode.bind(this, restaurant.index)
-      // console.log(restaurant.index)
-      // console.log(restaurant)
+
       return (
         <Col span={8} className="Restaurant" key={index}>
           <Restaurant
@@ -189,6 +188,7 @@ class RatingSystem extends React.Component {
 
     const editModel = (
       <EditModel
+        index={this.state.editIndex}
         visible={this.state.configMode}
         onCancel={this.quitConfigMode.bind(this)}
         removeRestaurant={this.removeRestaurant.bind(this, this.state.editIndex)}
@@ -197,7 +197,7 @@ class RatingSystem extends React.Component {
         isAdd={this.state.editIndex === this.state.nextRestaurantIndex}
       />
     );
-    console.log(this.state.editIndex)
+
     return (
       <>
         <div style={{padding: 30}}>

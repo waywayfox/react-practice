@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { Modal, Button, Form, Switch, Radio, Rate, Checkbox, Input } from 'antd';
 
 const { TextArea } = Input;
@@ -6,10 +6,11 @@ const { TextArea } = Input;
 
 export const EditModel = (props) => {
   const [form] = Form.useForm();
+  const [isOnSale, setIsOnSale] = useState(props.restaurant.isOnSale)
 
+  console.log(props)
 
-  React.useEffect(() => {
-    console.log(props)
+  if (props.visible) {
     form.setFieldsValue({
       name: props.restaurant.name,
       description: props.restaurant.description,
@@ -18,37 +19,38 @@ export const EditModel = (props) => {
       serveList: props.restaurant.serveList,
       foundLocation: props.restaurant.foundLocation,
     });
-  }, [props.visible]);
-
-  const handleChange = ( field, value) => {
-    console.log(value)
-    switch (field) {
-      case "name":
-        console.log("in set name")
-        const s = "FADFADSFASFASF"
-        form.setFieldsValue({name: s})
-        break;
-    
-      default:
-        console.log("error")
-        break;
-    }
-  };
+  }
 
   const testFinish = (values) => {
     console.log(values)
   }
 
   const submitRestaurant = (values) => {
-    if (!values.isOnsale) {
-      values.isOnsale = props.restaurant.isOnsale;
-    }
-    props.saveRestaurant(values)
+    console.log(props.restaurant.index)
+    console.log(props.index)
+    console.log(form.getFieldValue("isOnsale"))
+    const isOnSaleValue = form.getFieldValue("isOnsale")
+    const newRestaurant = {
+      index: (typeof props.restaurant.index !== "undefined")? props.restaurant.index : props.index ,
+      name: values.name,
+      rating: values.rating,
+      description: values.description,
+      isOnSale: (typeof isOnSaleValue !== "undefined")? isOnSaleValue : props.restaurant.isOnSale,
+      serveList: values.serveList,
+      foundLocation: values.foundLocation
+    };
+    console.log(newRestaurant)
+    // if (!values.isOnsale) {
+    //   console.log("change isonsole")
+    //   console.log(props.restaurant.isOnSale)
+    //   values.isOnsale = props.restaurant.isOnsale;
+    // }
+    props.saveRestaurant(newRestaurant)
   }
 
   const generateModelFooter = () => {
     const footer = [
-      <Button type="primary" onClick={submitRestaurant} form="RestaurantForm" key="submit" htmlType="submit">
+      <Button type="primary" form="RestaurantForm" key="submit" htmlType="submit">
         儲存
       </Button>,
       <Button key="cancel" onClick={props.onCancel}>
@@ -70,9 +72,9 @@ export const EditModel = (props) => {
     <Form.Item
       label="name"
       name="name"
-      rules={[{ required: true, message: '請輸入餐廳名稱!' }]}
+      rules={[{ required: true, message: '請輸入餐廳名稱!' },{ type: 'string', min:3}]}
     >
-      <Input onChange={(value)=>{ handleChange("name", value.target.value)}}></Input>
+      <Input></Input>
     </Form.Item>
   );
 
@@ -101,6 +103,7 @@ export const EditModel = (props) => {
       label="isOnsale"
       name="isOnsale"
     >
+      {/* {props.restaurant.isOnSale? <Switch checked={true} /> : <Switch checked={false} />} */}
       <Switch />
     </Form.Item>
   );
@@ -144,7 +147,7 @@ export const EditModel = (props) => {
         footer={footer}
         forceRender
       >
-        <Form form={form} onFinish={testFinish} id="RestaurantForm" >
+        <Form form={form} onFinish={submitRestaurant} id="RestaurantForm" >
           {nameFormItem}
           {descriptionFormItem}
           {ratingFormItem}
